@@ -28,7 +28,7 @@ FROM node:22-alpine AS backend-ts-builder
 WORKDIR /app/backend
 
 # Copy backend package files (if any - currently uses @appdeploy/sdk)
-COPY backend/package.json backend/package-lock.json* ./ 2>/dev/null || true
+COPY backend/package.json backend/package-lock.json* ./
 
 # Install TypeScript/backend dependencies if package.json exists
 RUN if [ -f package.json ]; then npm ci --prefer-offline --no-audit --no-fund 2>/dev/null || npm install --prefer-offline --no-audit --no-fund; fi
