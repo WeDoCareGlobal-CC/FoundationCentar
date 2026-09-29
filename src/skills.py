@@ -21,7 +21,7 @@ class SkillExecutionResult:
     skill_name: str
     output: str
     execution_time_ms: int = 0
-    metadata: dict[str, Any] = None
+    metadata: dict[str, Any] | None = None
 
 
 def skill_diagnose_smart_meter(input_data: MeterAuditInput, engine=None) -> SkillExecutionResult:
