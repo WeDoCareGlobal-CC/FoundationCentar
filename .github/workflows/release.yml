@@ -44,14 +44,41 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Zenodo deposition
-        if: github.event.release.prerelease == false
-        uses: zenodo/zenodo-action@v1
-        with:
-          files: |
-            CITATION.cff
-            .zenodo.json
-          zenodo_token: ${{ secrets.ZENODO_TOKEN }}
-          record: ${{ secrets.ZENODO_RECORD }}
-          metadata_only: false
-          publish: true
+      - name: Zenodo deposition (REST API)
+        if: github.event.release.prerelease == false && env.ZENODO_TOKEN != ''
+        env:
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+        run: |
+          set -euo pipefail
+          VERSION="${{ github.event.release.tag_name }}"
+          
+          # Create deposition
+          echo "Creating Zenodo deposition..."
+          DEPOSITION=$(curl -s -X POST "https://zenodo.org/api/deposit/depositions" \
+            -H "Authorization: Bearer $ZENODO_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"metadata": {"upload_type": "software", "title": "FoundationCentar — One-Click Agent Factory OS", "description": "Production-grade autonomous cloud AI operating platform.", "creators": [{"name": "We Do Care Global", "affiliation": "We Do Care Global"}, {"name": "Perla, Emir", "orcid": "0009-0009-8515-2727", "affiliation": "We Do Care Global"}], "license": "Apache-2.0", "keywords": ["agentic AI", "autonomous systems", "multi-agent systems", "AI governance", "agent orchestration", "hybrid RAG", "research software", "ORCID", "Zenodo", "NVIDIA NIM", "vLLM", "FastAPI", "React", "TypeScript", "AppDeploy"], "related_identifiers": [{"relation": "isSupplementTo", "identifier": "https://github.com/we-do-care-global/agentguard", "resource_type": "software"}, {"relation": "isSupplementTo", "identifier": "https://github.com/we-do-care-global/enterprise-hybrid-rag", "resource_type": "software"}, {"relation": "isSupplementTo", "identifier": "https://github.com/we-do-care-global/agent-eval", "resource_type": "software"}, {"relation": "isSupplementTo", "identifier": "https://github.com/we-do-care-global/agentvault", "resource_type": "software"}, {"relation": "isSupplementTo", "identifier": "https://github.com/we-do-care-global/pharma-intelligence-os", "resource_type": "software"}], "access_right": "open"}}')
+          
+          DEPOSITION_ID=$(echo "$DEPOSITION" | python3 -c "import sys, json; print(json.load(sys.stdin)['id'])")
+          echo "Deposition ID: $DEPOSITION_ID"
+          
+          # Create zip of repo
+          git archive --format=zip --output="FoundationCentar-$VERSION.zip" "$VERSION"
+          
+          # Upload file
+          echo "Uploading archive..."
+          curl -s -X PUT "https://zenodo.org/api/deposit/depositions/$DEPOSITION_ID/files/FoundationCentar-$VERSION.zip" \
+            -H "Authorization: Bearer $ZENODO_TOKEN" \
+            --upload-file "FoundationCentar-$VERSION.zip"
+          
+          # Publish
+          echo "Publishing deposition..."
+          PUBLISH=$(curl -s -X POST "https://zenodo.org/api/deposit/depositions/$DEPOSITION_ID/actions/publish" \
+            -H "Authorization: Bearer $ZENODO_TOKEN")
+          
+          DOI=$(echo "$PUBLISH" | python3 -c "import sys, json; print(json.load(sys.stdin)['doi'])")
+          echo "Published! DOI: $DOI"
+          
+          # Update release with DOI
+          gh api -X PATCH "repos/${{ github.repository }}/releases/tags/$VERSION" \
+            -f body="FoundationCentar — One-Click Agent Factory OS\n\nMerged from:\n- AtlanTida OS (Python/FastAPI orchestration)\n- We Do Care Global Agentic Operations OS (React/TypeScript control plane + AppDeploy backend)\n- Daily Base AI Startup Factory (revenue/profit engine, worker campaigns, monetization)\n\nFeatures:\n- Hierarchical 10-agent orchestration (Brain → Chiefs → Workers)\n- Model registry with NVIDIA NIM + vLLM fallbacks\n- CEO Control Plane with one-click actions & approval gates\n- Profit mission activation, worker campaigns, revenue ranking\n- Unified identity (Google → GitHub/ORCID/Zenodo OAuth)\n- Local AI bridge (bounded delegation)\n- Research/release pipeline (GitHub → Zenodo DOI)\n- Multi-stage Docker (frontend + backend + Python + nginx)\n\n**DOI:** https://doi.org/$DOI"
