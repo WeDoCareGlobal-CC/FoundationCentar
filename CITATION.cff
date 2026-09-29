@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "We Do Care Global — Agentic Operations OS"
+message: "If you use this software, please cite the repository and its Zenodo release."
+type: software
+authors:
+  - name: "We Do Care Global"
+repository-code: "https://github.com/emirperla96-lab/we-do-care-global-agentic-operations-os"
+url: "https://we-do-care-global.github.io/we-do-care-global/"
+license: Apache-2.0
+keywords:
+  - agentic AI
+  - autonomous systems
+  - multi-agent systems
+  - AI governance
+  - hybrid RAG
+  - AI operations

@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+import os
 
 from orchestrator import brain, run_cyclical_execution
 from telemetry import app as telemetry_app
@@ -10,13 +11,13 @@ from telemetry import app as telemetry_app
 def run_server(port: int = 8000, host: str = "0.0.0.0") -> None:
     """Run the telemetry API server."""
     import uvicorn
-    print(f"AtlanTida OS: Telemetry API starting on http://{host}:{port}")
+    print(f"FoundationCentar: Telemetry API starting on http://{host}:{port}")
     uvicorn.run(telemetry_app, host=host, port=port)
 
 
 def run_cli() -> None:
     """Run in CLI demo mode."""
-    print("AtlanTida OS v1.0.0 - Brain Agent Online")
+    print("FoundationCentar v1.0.0 - Brain Agent Online")
     print("=" * 50)
 
     # Demo requests
@@ -33,11 +34,11 @@ def run_cli() -> None:
         print(f"Result: {result}")
 
     print("\n" + "=" * 50)
-    print("AtlanTida OS: Ready.")
+    print("FoundationCentar: Ready.")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="AtlanTida OS - Autonomous Cloud AI Operating System")
+    parser = argparse.ArgumentParser(description="FoundationCentar - One-Click Agent Factory OS")
     parser.add_argument("--mode", choices=["server", "cli"], default="cli",
                         help="Run mode: server (API) or cli (demo)")
     parser.add_argument("--port", type=int, default=8000,

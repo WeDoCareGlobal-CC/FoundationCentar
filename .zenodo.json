@@ -1,0 +1,22 @@
+{
+  "title": "We Do Care Global — Agentic Operations OS",
+  "description": "Human-governed autonomous business operating system for mission execution, multi-agent delegation, revenue operations, regulatory intelligence, auditability and bounded local-AI delegation.",
+  "creators": [
+    { "name": "We Do Care Global", "affiliation": "We Do Care Global" }
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "agentic AI",
+    "autonomous systems",
+    "AI operations",
+    "multi-agent systems",
+    "AI governance",
+    "hybrid RAG",
+    "research software",
+    "ORCID",
+    "Zenodo"
+  ],
+  "related_identifiers": [],
+  "upload_type": "software",
+  "access_right": "open"
+}

@@ -3,6 +3,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Any
+from datetime import datetime
 
 app = FastAPI(
     title="AtlanTida OS Telemetry",
@@ -93,8 +94,9 @@ async def execute_skill(request: SkillRequest):
         "half_hourly_reconciliation": skill_reconcile_half_hourly_tariff,
     }
 
-    if request.domain not in skills:
-        raise HTTPException(status_code=404, detail=f"Skill '{request.domain}' not found")
+    skill_name = request.prompt
+    if skill_name not in skills:
+        raise HTTPException(status_code=404, detail=f"Skill '{skill_name}' not found")
 
     # Create a mock input
     input_data = MeterAuditInput(
@@ -104,7 +106,7 @@ async def execute_skill(request: SkillRequest):
         tariff_zone=request.domain,
     )
 
-    result = skills[request.domain](input_data)
+    result = skills[skill_name](input_data)
     return {
         "status": result.status,
         "skill": result.skill_name,

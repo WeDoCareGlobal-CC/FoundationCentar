@@ -1,0 +1,9 @@
+[
+  {
+    "name": "metadata-sync",
+    "cron": "0 */6 * * *",
+    "handler": "syncMetadataHandler",
+    "timezone": "Europe/Sarajevo",
+    "payload": { "scope": "github-public-metadata" }
+  }
+]
