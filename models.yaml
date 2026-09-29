@@ -1,0 +1,252 @@
+# FoundationCentar — Model Registry for Multi-Agent Orchestration
+# Maps each Chief/Worker role to primary + fallback model endpoints (OpenAI-compatible)
+
+brain:
+  primary:
+    provider: "nvidia_nim"
+    model: "nvidia/nemotron-3-ultra-550b-a55b"
+    base_url: "https://integrate.api.nvidia.com/v1"
+    api_key_env: "NVIDIA_API_KEY"
+    capabilities: ["reasoning", "planning", "routing", "function_calling"]
+    max_tokens: 4096
+    temperature: 0.1
+  fallbacks:
+    - provider: "nvidia_nim"
+      model: "nvidia/nemotron-3-super-120b-a12b"
+      base_url: "https://integrate.api.nvidia.com/v1"
+      api_key_env: "NVIDIA_API_KEY"
+    - provider: "nvidia_nim"
+      model: "nvidia/llama-3.1-nemotron-70b-instruct"
+      base_url: "https://integrate.api.nvidia.com/v1"
+      api_key_env: "NVIDIA_API_KEY"
+    - provider: "vllm"
+      model: "Qwen/Qwen3-235B-A22B"
+      base_url: "http://localhost:8001/v1"
+      api_key_env: "VLLM_API_KEY"
+
+chiefs:
+  operations:
+    primary:
+      provider: "vllm"
+      model: "Qwen/Qwen-AgentWorld-35B-A3B"
+      base_url: "http://localhost:8002/v1"
+      api_key_env: "VLLM_API_KEY"
+      capabilities: ["os", "terminal", "swe", "mcp", "search", "android", "web"]
+      max_tokens: 8192
+      temperature: 0.2
+    fallbacks:
+      - provider: "vllm"
+        model: "Qwen/Qwen3-30B-A3B-Instruct"
+        base_url: "http://localhost:8003/v1"
+        api_key_env: "VLLM_API_KEY"
+      - provider: "nvidia_nim"
+        model: "nvidia/llama-3.1-nemotron-70b-instruct"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+
+  devops:
+    primary:
+      provider: "vllm"
+      model: "Qwen/Qwen3-Coder-32B"
+      base_url: "http://localhost:8004/v1"
+      api_key_env: "VLLM_API_KEY"
+      capabilities: ["coding", "shell", "ci_cd", "docker", "k8s", "infra"]
+      max_tokens: 8192
+      temperature: 0.1
+    fallbacks:
+      - provider: "vllm"
+        model: "Qwen/Qwen2.5-Coder-32B-Instruct"
+        base_url: "http://localhost:8005/v1"
+        api_key_env: "VLLM_API_KEY"
+      - provider: "nvidia_nim"
+        model: "mistralai/codestral-22b-instruct-v0.1"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+
+  research:
+    primary:
+      provider: "vllm"
+      model: "Qwen/Qwen3-30B-A3B-Thinking"
+      base_url: "http://localhost:8006/v1"
+      api_key_env: "VLLM_API_KEY"
+      capabilities: ["reasoning", "math", "analysis", "deep_research"]
+      max_tokens: 16384
+      temperature: 0.3
+    fallbacks:
+      - provider: "nvidia_nim"
+        model: "nvidia/nemotron-3-ultra-550b-a55b"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+      - provider: "nvidia_nim"
+        model: "nvidia/nemotron-3-super-120b-a12b"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+
+  finance:
+    primary:
+      provider: "nvidia_nim"
+      model: "meta/llama-3.1-405b-instruct"
+      base_url: "https://integrate.api.nvidia.com/v1"
+      api_key_env: "NVIDIA_API_KEY"
+      capabilities: ["structured_reasoning", "long_context", "analysis"]
+      max_tokens: 8192
+      temperature: 0.1
+    fallbacks:
+      - provider: "nvidia_nim"
+        model: "nvidia/llama-3.1-nemotron-70b-instruct"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+      - provider: "vllm"
+        model: "Qwen/Qwen3-32B"
+        base_url: "http://localhost:8007/v1"
+        api_key_env: "VLLM_API_KEY"
+
+  legal:
+    primary:
+      provider: "nvidia_nim"
+      model: "meta/llama-3.1-405b-instruct"
+      base_url: "https://integrate.api.nvidia.com/v1"
+      api_key_env: "NVIDIA_API_KEY"
+      capabilities: ["structured_reasoning", "long_context", "compliance"]
+      max_tokens: 8192
+      temperature: 0.1
+    fallbacks:
+      - provider: "nvidia_nim"
+        model: "nvidia/llama-3.1-nemotron-70b-instruct"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+
+  marketing:
+    primary:
+      provider: "vllm"
+      model: "Qwen/Qwen3-32B"
+      base_url: "http://localhost:8008/v1"
+      api_key_env: "VLLM_API_KEY"
+      capabilities: ["creative", "copywriting", "campaigns", "multilingual"]
+      max_tokens: 8192
+      temperature: 0.7
+    fallbacks:
+      - provider: "nvidia_nim"
+        model: "mistralai/mistral-large-2-instruct"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+
+  sales:
+    primary:
+      provider: "vllm"
+      model: "Qwen/Qwen3-32B"
+      base_url: "http://localhost:8009/v1"
+      api_key_env: "VLLM_API_KEY"
+      capabilities: ["persuasion", "negotiation", "crm", "outreach"]
+      max_tokens: 8192
+      temperature: 0.5
+    fallbacks:
+      - provider: "nvidia_nim"
+        model: "mistralai/mistral-large-2-instruct"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+
+  product:
+    primary:
+      provider: "vllm"
+      model: "Qwen/Qwen3-30B-A3B-Instruct"
+      base_url: "http://localhost:8010/v1"
+      api_key_env: "VLLM_API_KEY"
+      capabilities: ["product_strategy", "roadmap", "requirements", "prioritization"]
+      max_tokens: 8192
+      temperature: 0.3
+    fallbacks:
+      - provider: "nvidia_nim"
+        model: "nvidia/llama-3.1-nemotron-70b-instruct"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+
+  hr:
+    primary:
+      provider: "vllm"
+      model: "Qwen/Qwen3-14B"
+      base_url: "http://localhost:8011/v1"
+      api_key_env: "VLLM_API_KEY"
+      capabilities: ["recruiting", "policy", "employee_relations", "training"]
+      max_tokens: 4096
+      temperature: 0.3
+    fallbacks:
+      - provider: "nvidia_nim"
+        model: "nvidia/nemotron-3.5-lightning-30b-a3b"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+
+workers:
+  default:
+    primary:
+      provider: "vllm"
+      model: "Qwen/Qwen3-14B"
+      base_url: "http://localhost:8012/v1"
+      api_key_env: "VLLM_API_KEY"
+      capabilities: ["skill_execution", "fast_inference"]
+      max_tokens: 4096
+      temperature: 0.2
+    fallbacks:
+      - provider: "vllm"
+        model: "mistralai/Mixtral-8x22B-Instruct-v0.1"
+        base_url: "http://localhost:8013/v1"
+        api_key_env: "VLLM_API_KEY"
+      - provider: "nvidia_nim"
+        model: "mistralai/mixtral-8x22b-v0.1"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+
+  diagnostic:
+    primary:
+      provider: "vllm"
+      model: "Qwen/Qwen3-14B"
+      base_url: "http://localhost:8012/v1"
+      api_key_env: "VLLM_API_KEY"
+      capabilities: ["analysis", "diagnosis", "structured_output"]
+      max_tokens: 4096
+      temperature: 0.1
+    fallbacks:
+      - provider: "nvidia_nim"
+        model: "nvidia/nemotron-3.5-lightning-30b-a3b"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+
+  reconciliation:
+    primary:
+      provider: "vllm"
+      model: "Qwen/Qwen3-14B"
+      base_url: "http://localhost:8012/v1"
+      api_key_env: "VLLM_API_KEY"
+      capabilities: ["calculation", "validation", "structured_output"]
+      max_tokens: 4096
+      temperature: 0.1
+    fallbacks:
+      - provider: "nvidia_nim"
+        model: "nvidia/nemotron-3.5-lightning-30b-a3b"
+        base_url: "https://integrate.api.nvidia.com/v1"
+        api_key_env: "NVIDIA_API_KEY"
+
+# Global settings
+defaults:
+  timeout_seconds: 60
+  max_retries: 3
+  retry_delay_seconds: 2
+  circuit_breaker_threshold: 3
+  circuit_breaker_timeout: 60
+  health_check_interval: 30
+
+# vLLM deployment ports mapping (for docker-compose)
+vllm_ports:
+  brain_qwen3_235b: 8001
+  ops_agentworld_35b: 8002
+  ops_qwen3_30b: 8003
+  devops_coder_32b: 8004
+  devops_coder_2_5_32b: 8005
+  research_thinking_30b: 8006
+  finance_qwen3_32b: 8007
+  marketing_qwen3_32b: 8008
+  sales_qwen3_32b: 8009
+  product_qwen3_30b: 8010
+  hr_qwen3_14b: 8011
+  workers_qwen3_14b: 8012
+  workers_mixtral_8x22b: 8013
