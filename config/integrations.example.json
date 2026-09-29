@@ -1,6 +1,6 @@
 {
-  "repository": "emirperla96-lab/we-do-care-global-agentic-operations-os",
-  "orcid": { "id": "", "mode": "public-read-until-OAuth-enabled" },
+  "repository": "we-do-care-global/FoundationCentar",
+  "orcid": { "id": "0009-0009-8515-2727", "mode": "public-read-until-OAuth-enabled" },
   "zenodo": { "mode": "github-release-integration", "recordUrl": "" },
   "localAiBridge": {
     "runtime": "Hermes-compatible",

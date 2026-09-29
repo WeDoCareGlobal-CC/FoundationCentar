@@ -1,16 +1,53 @@
 cff-version: 1.2.0
-title: "We Do Care Global — Agentic Operations OS"
+title: "FoundationCentar — One-Click Agent Factory OS"
 message: "If you use this software, please cite the repository and its Zenodo release."
 type: software
 authors:
   - name: "We Do Care Global"
-repository-code: "https://github.com/emirperla96-lab/we-do-care-global-agentic-operations-os"
+  - name: "Perla, Emir"
+    orcid: "0009-0009-8515-2727"
+    affiliation: "We Do Care Global"
+repository-code: "https://github.com/we-do-care-global/FoundationCentar"
 url: "https://we-do-care-global.github.io/we-do-care-global/"
 license: Apache-2.0
+version: "1.0.0"
+date-released: "2026-09-29"
 keywords:
   - agentic AI
   - autonomous systems
   - multi-agent systems
   - AI governance
+  - agent orchestration
+  - one-click agent factory
   - hybrid RAG
   - AI operations
+  - research software
+  - ORCID
+  - Zenodo
+  - NVIDIA NIM
+  - vLLM
+  - FastAPI
+  - React
+  - TypeScript
+  - AppDeploy
+references:
+  - type: software
+    title: "AgentGuard — Security & Governance for AI Agents"
+    url: "https://github.com/we-do-care-global/agentguard"
+    doi: "10.5281/zenodo.22945778"
+  - type: software
+    title: "Enterprise Hybrid-RAG — Production RAG with Evaluation"
+    url: "https://github.com/we-do-care-global/enterprise-hybrid-rag"
+    doi: "10.5281/zenodo.22945802"
+  - type: software
+    title: "Agent Eval — Agent Evaluation & Observability Platform"
+    url: "https://github.com/we-do-care-global/agent-eval"
+    doi: "10.5281/zenodo.22945804"
+  - type: software
+    title: "AgentVault — Enterprise Control Plane for AI Tools"
+    url: "https://github.com/we-do-care-global/agentvault"
+    doi: "10.5281/zenodo.22983557"
+  - type: software
+    title: "Pharma Intelligence OS — Pharmacovigilance & Regulatory Intelligence"
+    url: "https://github.com/we-do-care-global/pharma-intelligence-os"
+    doi: "10.5281/zenodo.22983388"

@@ -1,8 +1,9 @@
 {
-  "title": "We Do Care Global — Agentic Operations OS",
-  "description": "Human-governed autonomous business operating system for mission execution, multi-agent delegation, revenue operations, regulatory intelligence, auditability and bounded local-AI delegation.",
+  "title": "FoundationCentar — One-Click Agent Factory OS",
+  "description": "Production-grade autonomous cloud AI operating platform. One-Click Agent Factory orchestrating multi-agent workflows with human governance, bounded economics, evidence-first verification, unified identity (Google → GitHub/ORCID/Zenodo), local AI bridge, and research/release pipeline (GitHub → Zenodo DOI). Merged from AtlanTida OS + We Do Care Global Agentic Operations OS + Daily Base AI Startup Factory.",
   "creators": [
-    { "name": "We Do Care Global", "affiliation": "We Do Care Global" }
+    { "name": "We Do Care Global", "affiliation": "We Do Care Global" },
+    { "name": "Perla, Emir", "orcid": "0009-0009-8515-2727", "affiliation": "We Do Care Global" }
   ],
   "license": "Apache-2.0",
   "keywords": [
@@ -11,12 +12,26 @@
     "AI operations",
     "multi-agent systems",
     "AI governance",
+    "agent orchestration",
+    "one-click agent factory",
     "hybrid RAG",
     "research software",
     "ORCID",
-    "Zenodo"
+    "Zenodo",
+    "NVIDIA NIM",
+    "vLLM",
+    "FastAPI",
+    "React",
+    "TypeScript",
+    "AppDeploy"
   ],
-  "related_identifiers": [],
+  "related_identifiers": [
+    { "relation": "isSupplementTo", "identifier": "https://github.com/we-do-care-global/agentguard", "resource_type": "software" },
+    { "relation": "isSupplementTo", "identifier": "https://github.com/we-do-care-global/enterprise-hybrid-rag", "resource_type": "software" },
+    { "relation": "isSupplementTo", "identifier": "https://github.com/we-do-care-global/agent-eval", "resource_type": "software" },
+    { "relation": "isSupplementTo", "identifier": "https://github.com/we-do-care-global/agentvault", "resource_type": "software" },
+    { "relation": "isSupplementTo", "identifier": "https://github.com/we-do-care-global/pharma-intelligence-os", "resource_type": "software" }
+  ],
   "upload_type": "software",
   "access_right": "open"
 }
