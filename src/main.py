@@ -1,8 +1,6 @@
 """AtlanTida OS - Application entry point."""
 
 import argparse
-import sys
-import os
 
 from orchestrator import brain, run_cyclical_execution
 from telemetry import app as telemetry_app

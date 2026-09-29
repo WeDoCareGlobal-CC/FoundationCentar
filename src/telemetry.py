@@ -1,9 +1,10 @@
 """AtlanTida OS - Telemetry API (FastAPI)."""
 
+from datetime import datetime, timezone
+from typing import Any
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import Any
-from datetime import datetime
 
 app = FastAPI(
     title="AtlanTida OS Telemetry",
@@ -84,7 +85,6 @@ async def execute_skill(request: SkillRequest):
     """Execute a skill by name."""
     from skills import (
         MeterAuditInput,
-        SkillExecutionResult,
         skill_diagnose_smart_meter,
         skill_reconcile_half_hourly_tariff,
     )
@@ -101,7 +101,7 @@ async def execute_skill(request: SkillRequest):
     # Create a mock input
     input_data = MeterAuditInput(
         meter_id="meter-001",
-        reading_date=datetime.now().isoformat(),
+        reading_date=datetime.now(timezone.utc).isoformat(),
         consumption_kwh=400,
         tariff_zone=request.domain,
     )
@@ -118,7 +118,6 @@ async def execute_skill(request: SkillRequest):
 @app.post("/api/v1/create-agent")
 async def create_agent(request: NewAgent):
     """Register a new agent in the system."""
-    from orchestrator import brain, Chief, Worker
     # This is a simplified registration - real impl would be more complex
     return {
         "registered": True,

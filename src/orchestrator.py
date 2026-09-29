@@ -1,9 +1,8 @@
 """AtlanTida OS - Core Orchestrator."""
 
 import asyncio
-import random
-from datetime import datetime
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from typing import Any
 
 
@@ -19,7 +18,7 @@ class AtState:
 
     def transition(self, new_status: str) -> None:
         self.status = new_status
-        self.last_executed = datetime.now()
+        self.last_executed = datetime.now(timezone.utc)
         if new_status == "running":
             self.execution_count += 1
 
@@ -43,7 +42,7 @@ class Brain:
             "devops": "Chief_DevOps",
             "research": "Chief_Research",
         }
-        self.chiefs: dict[str, "Chief"] = {}
+        self.chiefs: dict[str, Chief] = {}
 
     def register_chief(self, domain: str, chief: "Chief") -> None:
         self.chiefs[domain] = chief
@@ -95,7 +94,7 @@ class Worker:
     def match_score(self, request: dict[str, Any]) -> float:
         """How well this worker matches the request (0.0 to 1.0)."""
         action = request.get("action", "")
-        return 0.5 + (len(set(action.lower().split()) & set(s.lower() for s in self.skills)) * 0.1)
+        return 0.5 + (len(set(action.lower().split()) & {s.lower() for s in self.skills}) * 0.1)
 
     def execute(self, request: dict[str, Any]) -> str:
         self.state.transition("running")
@@ -160,7 +159,7 @@ def run_cyclical_execution(interval_seconds: int = 300) -> None:
             print(f"\n--- Round {round_num} ---")
             for domain, chief in brain.chiefs.items():
                 print(f"[{domain}] {chief.name}: {chief.state.status}")
-            print(f"Round {round_num} complete at {datetime.now().isoformat()}")
+            print(f"Round {round_num} complete at {datetime.now(timezone.utc).isoformat()}")
             asyncio.run(asyncio.sleep(interval_seconds))
     except KeyboardInterrupt:
         print("\nAtlanTida OS: Shutting down gracefully.")

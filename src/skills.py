@@ -1,7 +1,7 @@
 """AtlanTida OS - Skill definitions and execution."""
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 
@@ -45,7 +45,7 @@ def skill_diagnose_smart_meter(input_data: MeterAuditInput, engine=None) -> Skil
     else:
         diagnosis += "\n✅ Normal consumption pattern."
 
-    execution_time = int(datetime.now().timestamp() * 1000) % 1000
+    execution_time = int(datetime.now(timezone.utc).timestamp() * 1000) % 1000
 
     return SkillExecutionResult(
         status="ok" if not was_anomaly else "warning",
