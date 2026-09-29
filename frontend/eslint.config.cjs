@@ -12,7 +12,6 @@ module.exports = [
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: 'module',
-      ecmaFeatures: { jsx: true },
       globals: {
         ...globals.browser,
         ...globals.es2020,
