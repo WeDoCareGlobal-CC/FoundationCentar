@@ -5,7 +5,7 @@ const globals = require('globals');
 
 module.exports = [
   {
-    ignores: ['dist', '.eslintrc.cjs'],
+    ignores: ['dist', 'eslint.config.cjs'],
   },
   js.configs.recommended,
   {
@@ -15,6 +15,7 @@ module.exports = [
       globals: {
         ...globals.browser,
         ...globals.es2020,
+        ...globals.node,
       },
       parserOptions: {
         ecmaVersion: 2020,
