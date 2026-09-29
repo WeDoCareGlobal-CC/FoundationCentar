@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { api, auth, ws } from '@appdeploy/client';
+import { api, auth, ws } from './appdeploy-client';
 import { Activity, ArrowUpRight, Bot, BrainCircuit, CheckCircle2, CircleDollarSign, GitBranch, Github, History, LockKeyhole, LogIn, Network, RefreshCw, ShieldCheck, Sparkles, UserCheck, Users, WalletCards, Workflow, XCircle, Zap } from 'lucide-react';
 
 type Mission={id:string;title:string;department:string;status:string;owner:string;budget:number;revenue:number;cost:number;progress:number;verification?:string;action?:string};
