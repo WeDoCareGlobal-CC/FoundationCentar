@@ -34,8 +34,6 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: frontend
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -58,8 +56,6 @@ jobs:
         working-directory: backend
     steps:
       - uses: actions/checkout@v4
-        with:
-          path: backend
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
