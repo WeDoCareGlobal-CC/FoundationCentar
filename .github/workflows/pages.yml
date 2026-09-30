@@ -1,0 +1,70 @@
+name: Pages
+
+# Deploys the built app to GitHub Pages. Pages for this repo is configured as
+# "Deploy from a branch" on main:/docs (legacy), matching the other public repos
+# in this org, so this workflow builds and commits the bundle into docs/ and lets
+# the Pages build pick it up. It does NOT use actions/deploy-pages, which
+# requires Pages to be switched to the "GitHub Actions" source.
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/**
+      - frontend/**
+      - backend/**
+      - public/**
+      - package.json
+      - package-lock.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - vite.config.ts
+      - index.html
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - name: Publish bundle into docs/
+        run: |
+          set -euo pipefail
+          find docs -mindepth 1 -maxdepth 1 ! -name '*.md' -exec rm -rf {} +
+          cp -r frontend/dist/. docs/
+          sed -i 's#"/assets/#"./assets/#g; s#"/favicon#"./favicon#g' docs/index.html || true
+
+      - name: Commit and push
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A docs
+          if git diff --staged --quiet; then
+            echo "docs/ already up to date"
+            exit 0
+          fi
+          git commit -m "chore(docs): publish Pages build [skip ci]"
+          git push || (git pull --rebase && git push)
