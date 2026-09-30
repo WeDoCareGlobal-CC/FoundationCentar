@@ -1,33 +1,77 @@
-# Contributing to Atlantida OS
+# Contributing to FoundationCentar
 
-Thank you for your interest in contributing. This guide covers how to work with the 10-agent topology, add new skills, run the Three.js PWA locally, and understand skill synthesis from execution traces.
+Thank you for your interest in contributing to FoundationCentar — the One-Click Agent Factory OS for autonomous multi-agent orchestration with CEO governance, bounded economics, evidence-first verification, and unified identity.
 
 ## Architecture Overview
 
-Atlantida OS uses a hierarchical 10-agent collective:
+FoundationCentar merges three systems:
+- **AtlanTida OS** — Python/FastAPI orchestration layer
+- **We Do Care Global Agentic Operations OS** — React/TypeScript control plane + AppDeploy backend
+- **Daily Base AI Startup Factory** — Revenue/profit engine, worker campaigns, monetization
 
+The system uses a hierarchical 10-agent topology:
 ```
-Brain Agent (Global Router) -> Chief Agents (Domain Leads) -> Worker Agents (Skill Executors) -> Deterministic State Machines -> Skill Synthesis & Execution Traces
+Brain Agent (Global Router) → Chief Agents (Domain Leads) → Worker Agents (Skill Executors)
 ```
 
-- **Brain Agent**: Routes requests to the right chief based on domain
-- **Chief Agents**: 9 domain leads (Marketing, Finance, Operations, HR, Legal, Sales, Product, DevOps, Research)
-- **Worker Agents**: Execute specific skills within a domain
-- **Deterministic State Machines**: Encode workflows as reproducible state transitions
-- **Skill Synthesis Engine**: Generates reusable skills (currently 76) from execution traces
+## Getting Started
+
+### Prerequisites
+- Python 3.11+
+- Node.js 22+ / pnpm 11+
+- Docker (for containerized deployment)
+
+### Local Development
+
+**Python API:**
+```bash
+cd FoundationCentar
+pip install -r requirements.lock
+python src/main.py --mode server
+# API available at http://localhost:8000
+```
+
+**Frontend (React + Vite):**
+```bash
+cd frontend
+npm install
+npm run dev
+# Frontend at http://localhost:5173
+```
+
+**Backend TypeScript (AppDeploy SDK):**
+```bash
+cd backend
+npm install
+npx tsc --noEmit  # Type check
+```
+
+**Full stack via Docker:**
+```bash
+docker build -t foundationcentar .
+docker run -p 8080:8080 foundationcentar
+# Full app at http://localhost:8080
+```
 
 ## Adding a New Skill
 
 Skills are organized into 9 domains. To add a new skill:
 
-1. **Identify the domain** - Which of the 9 domains does this belong to? (ai-models, operations, marketing, hr, legal, sales, product, devops, research)
-2. **Create the skill definition** - Add the skill to `src/skills/<domain>/<skill_name>.py` with:
+1. **Identify the domain** — Which of the 9 domains does this belong to? (ai-models, operations, marketing, hr, legal, sales, product, devops, research)
+
+2. **Create the skill definition** — Add the skill to `src/skills/<domain>/<skill_name>.py` with:
    - Input parameters (required vs optional)
    - Execution logic
    - Output schema
-3. **Register the skill** - Add it to the domain's skill registry in `src/skills/<domain>/__init__.py`
-4. **Test locally** - Run the skill via the CLI or API to verify it works
-5. **Submit execution traces** - Run the skill through real workflows so the synthesis engine can capture trace data
+
+3. **Register the skill** — Add it to the domain's skill registry in `src/skills/<domain>/__init__.py`
+
+4. **Test locally** — Run the skill via the CLI or API to verify it works:
+   ```bash
+   python src/cli.py run-skill <domain>/<skill_name> --params '{"key": "value"}'
+   ```
+
+5. **Submit execution traces** — Run the skill through real workflows so the synthesis engine can capture trace data
 
 ### Skill Structure
 
@@ -47,80 +91,48 @@ class MyNewSkill:
         return {"status": "ok", "result": ...}
 ```
 
-## Running the Three.js PWA Locally
-
-The 3D Neural Command Center is a Three.js-based PWA for visualizing multi-agent DAGs.
-
-### Prerequisites
-- Node.js 18+ / npm 9+
-- Git
-
-### Setup
-```bash
-# Clone the repo
-git clone https://github.com/emirperla96-lab/atlantida-os.git
-cd atlantida-os
-
-# Install dependencies
-npm install
-
-# Start the dev server
-npm run dev
-```
-
-The PWA will be available at `http://localhost:3000`. It connects to the backend API for real-time agent state visualization.
-
-### Building for Production
-```bash
-npm run build
-```
-
-The built PWA is served as a Progressive Web App with offline support.
-
-## Skill Synthesis from Execution Traces
-
-The system automatically synthesizes skills from execution traces:
-
-1. **Trace Collection**: Every executed workflow generates a trace (timestamp, agent chain, inputs, outputs, state transitions)
-2. **Pattern Recognition**: The synthesis engine analyzes traces to find recurring patterns across domains
-3. **Skill Generation**: Recurring patterns are converted into reusable parameterized skills
-4. **Registration**: New skills are registered into the appropriate domain's skill registry
-
-### How to Trigger Synthesis
-- Run workflows through the Brain Agent API (`POST /api/v1/brain/route`)
-- Traces are stored in the SQLite database (`/data/traces.db`)
-- The synthesis engine runs periodically or can be triggered manually
-
-## CLI Tools
-
-The system exposes CLI tools for local development:
+## Running Tests
 
 ```bash
-# List all available skills
-python src/cli.py list-skills
+# Python tests with coverage
+python -m pytest tests/ -v --cov=src --cov-report=term-missing
 
-# Execute a specific skill
-python src/cli.py run-skill <domain>/<skill_name> --params '{"key": "value"}'
+# Frontend tests
+cd frontend && npm run test
 
-# View execution traces
-python src/cli.py traces --domain marketing --limit 10
-
-# Synthesize skills from recent traces
-python src/cli.py synthesize --domain all --since 7d
+# All tests (via CI)
+# Runs automatically on push/PR
 ```
 
 ## Pull Request Process
 
 1. Fork the repo and create your branch from `main`
-2. Add your skill, fix, or feature with tests
-3. Ensure the CLI works (`python src/cli.py list-skills` shows your new skill)
-4. Submit a PR with a clear description of what domain/agents it touches
-5. The maintainers will review and merge
+2. Add your skill, fix, or feature **with tests**
+3. Ensure all checks pass:
+   - `ruff check src/` (Python linting)
+   - `mypy src/ --ignore-missing-imports` (type checking)
+   - `pytest tests/ --cov=src --cov-fail-under=80` (tests with ≥80% coverage)
+   - Frontend: `npm run lint && npm run typecheck && npm run build`
+   - Backend: `npx tsc --noEmit`
+4. Update `CHANGELOG.md` under `[Unreleased]` with your changes
+5. Submit a PR with a clear description of what domain/agents it touches
+6. The maintainers will review and merge
 
-## Code of Conduct
+## Code Style
 
-Please be respectful and constructive. This project is maintained by a small team - clear, specific PRs get faster reviews.
+- **Python**: Ruff (line length 100, py311 target) — config in `pyproject.toml`
+- **TypeScript**: ESLint + Prettier — configs in `frontend/` and `backend/`
+- **Conventional Commits**: Use `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:` prefixes
+
+## Security
+
+- Report security issues privately to `emirperla96@gmail.com`
+- All dependencies are scanned in CI (bandit, safety, npm audit)
+- Docker images run as non-root user (UID 1000)
+- Base images are pinned by digest
 
 ## License
 
-This project is licensed under the MIT License. See `LICENSE` for details.
+This project is licensed under the Apache-2.0 License. See `LICENSE` for details.
+
+By contributing, you agree that your contributions will be licensed under the same license.

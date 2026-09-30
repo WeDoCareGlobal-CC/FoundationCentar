@@ -3,8 +3,15 @@
 from datetime import datetime, timezone
 from typing import Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
+from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
+
+# Prometheus metrics
+REQUEST_COUNT = Counter("http_requests_total", "Total HTTP requests", ["method", "endpoint", "status"])
+REQUEST_LATENCY = Histogram("http_request_duration_seconds", "HTTP request latency", ["method", "endpoint"])
+SKILL_EXECUTIONS = Counter("skill_executions_total", "Total skill executions", ["skill", "status"])
+SKILL_DURATION = Histogram("skill_execution_duration_seconds", "Skill execution duration", ["skill"])
 
 app = FastAPI(
     title="AtlanTida OS Telemetry",
@@ -36,6 +43,12 @@ class CreateSkillRequest(BaseModel):
     name: str
     description: str
     parameters: dict[str, Any] | None = None
+
+
+@app.get("/metrics")
+async def metrics():
+    """Prometheus metrics endpoint."""
+    return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 
 @app.get("/")

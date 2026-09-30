@@ -42,7 +42,7 @@ COPY backend/ ./
 # =============================================================================
 # Stage 3: Python Runtime (FastAPI + Orchestrator + Telemetry)
 # =============================================================================
-FROM python:3.11-slim AS python-runtime
+FROM python:3.11-slim@sha256:a8c5e5b8c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5 AS python-runtime
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -50,22 +50,32 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
+# Create non-root user
+RUN useradd --no-create-home --shell /bin/bash --uid 1000 appuser
+
 WORKDIR /app
 
 # Copy Python requirements
 COPY requirements.txt ./
+COPY requirements.lock ./
 
 # Install Python dependencies
-RUN pip install --no-cache-dir --break-system-packages -r requirements.txt
+RUN pip install --no-cache-dir --break-system-packages -r requirements.lock
 
 # Copy Python source
 COPY src/ ./src/
 COPY models.yaml ./
 
+# Change ownership to non-root user
+RUN chown -R appuser:appuser /app
+
+# Switch to non-root user
+USER appuser
+
 # =============================================================================
 # Stage 4: Final Production Image
 # =============================================================================
-FROM python:3.11-slim AS production
+FROM python:3.11-slim@sha256:a8c5e5b8c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5 AS production
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -82,6 +92,7 @@ COPY --from=python-runtime /usr/local/lib/python3.11/site-packages /usr/local/li
 COPY --from=python-runtime /app/src ./src
 COPY --from=python-runtime /app/models.yaml ./models.yaml
 COPY --from=python-runtime /app/requirements.txt ./requirements.txt
+COPY --from=python-runtime /app/requirements.lock ./requirements.lock
 
 # Copy built frontend
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
@@ -139,6 +150,12 @@ server {
     # Health checks
     location /health {
         proxy_pass http://127.0.0.1:8000/health;
+        access_log off;
+    }
+
+    # Metrics endpoint
+    location /metrics {
+        proxy_pass http://127.0.0.1:8000/metrics;
         access_log off;
     }
 

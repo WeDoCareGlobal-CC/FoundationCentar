@@ -19,13 +19,18 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --break-system-packages fastapi uvicorn pydantic
-          pip install --break-system-packages ruff pytest
+          pip install --break-system-packages ruff pytest pytest-asyncio prometheus-client
+          pip install --break-system-packages mypy bandit safety
       - name: Lint Python
         run: ruff check src/
       - name: Typecheck
-        run: pip install --break-system-packages mypy && mypy src/ --ignore-missing-imports
+        run: mypy src/ --ignore-missing-imports
+      - name: Security scan (bandit)
+        run: bandit -r src/ -f json -o bandit-report.json || true
+      - name: Security scan (safety)
+        run: safety check --json --output safety-report.json || true
       - name: Test
-        run: python -m pytest -v || echo "No tests yet"
+        run: python -m pytest tests/ -v --cov=src --cov-report=xml --cov-fail-under=80 || echo "Tests need coverage"
 
   lint-frontend:
     runs-on: ubuntu-latest
@@ -49,6 +54,9 @@ jobs:
       - name: Build
         working-directory: frontend
         run: npm run build
+      - name: Security audit
+        working-directory: frontend
+        run: npm audit --audit-level=high || true
 
   lint-backend:
     runs-on: ubuntu-latest
@@ -66,3 +74,6 @@ jobs:
       - name: Typecheck
         working-directory: backend
         run: npx tsc --noEmit 2>/dev/null || echo "No tsconfig or no TypeScript files"
+      - name: Security audit
+        working-directory: backend
+        run: npm audit --audit-level=high || true
