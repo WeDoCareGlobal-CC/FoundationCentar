@@ -4,11 +4,36 @@
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap');
 :root {
-  font-family: Inter, system-ui, sans-serif;
-  color: #edf4f5;
-  background: #05090b;
-  font-synthesis: none;
+  --bg: #07090d;
+  --panel: #0d1118;
+  --panel2: #111722;
+  --line: rgba(255, 255, 255, 0.09);
+  --text: #f3f5f8;
+  --muted: #a3adbd;
+  --dim: #6e7889;
+  --gold: #d9a95f;
+  --gold2: #f1ca8c;
+  --cyan: #20d3b2;
+  --green: #34d399;
+  --red: #ff6b6b;
+  --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
 }
+[data-theme='light'] {
+  --bg: #f6f5f1;
+  --panel: #fff;
+  --panel2: #eeece5;
+  --line: rgba(20, 24, 30, 0.1);
+  --text: #171a20;
+  --muted: #596273;
+  --dim: #7c8491;
+  --shadow: 0 24px 70px rgba(20, 20, 20, 0.1);
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap');
+
 * {
   box-sizing: border-box;
 }
@@ -606,3 +631,43 @@ footer {
     width: 92vw;
   }
 }
+
+/* WDCG container modifications */
+.shell {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+@media (max-width: 560px) {
+  .shell {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+/* WDCG container modifications for existing elements */
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+@media (max-width: 560px) {
+  main {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+/* Also apply to sections for inner spacing */
+section {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+@media (max-width: 560px) {
+  section {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+/* Hero section may need full width? keep as is */
