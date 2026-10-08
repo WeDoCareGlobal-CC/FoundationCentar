@@ -1,4 +1,4 @@
-"""AtlanTida OS - Application entry point."""
+"""FoundationCentar - Application entry point."""
 
 import argparse
 

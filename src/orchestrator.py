@@ -1,4 +1,4 @@
-"""AtlanTida OS - Core Orchestrator."""
+"""FoundationCentar - Core Orchestrator."""
 
 import asyncio
 from dataclasses import dataclass, field
@@ -151,7 +151,7 @@ class Worker_DataProcessor(Worker):
 
 def run_cyclical_execution(interval_seconds: int = 300) -> None:
     """Run cyclical execution loop for all chiefs."""
-    print(f"AtlanTida OS: Starting cyclical execution every {interval_seconds}s...")
+    print(f"FoundationCentar: Starting cyclical execution every {interval_seconds}s...")
     round_num = 0
     try:
         while True:
@@ -162,12 +162,12 @@ def run_cyclical_execution(interval_seconds: int = 300) -> None:
             print(f"Round {round_num} complete at {datetime.now(timezone.utc).isoformat()}")
             asyncio.run(asyncio.sleep(interval_seconds))
     except KeyboardInterrupt:
-        print("\nAtlanTida OS: Shutting down gracefully.")
+        print("\nFoundationCentar: Shutting down gracefully.")
 
 
 if __name__ == "__main__":
     # Demo: route a few requests
-    print("AtlanTida OS v1.0.0 - Brain Agent Online")
+    print("FoundationCentar v1.0.0 - Brain Agent Online")
     print("=" * 50)
 
     test_requests = [
@@ -183,4 +183,4 @@ if __name__ == "__main__":
         print(f"Result: {result}")
 
     print("\n" + "=" * 50)
-    print("AtlanTida OS: Ready. Run run_cyclical_execution() for daemon mode.")
+    print("FoundationCentar: Ready. Run run_cyclical_execution() for daemon mode.")

@@ -1,4 +1,4 @@
-"""AtlanTida OS - Skill definitions and execution."""
+"""FoundationCentar - Skill definitions and execution."""
 
 from dataclasses import dataclass
 from datetime import datetime, timezone

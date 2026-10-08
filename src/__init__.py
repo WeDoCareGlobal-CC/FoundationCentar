@@ -1,4 +1,4 @@
-"""AtlanTida OS - Autonomous Hierarchical Multi-Agent Cloud Platform."""
+"""FoundationCentar - Autonomous Hierarchical Multi-Agent Cloud Platform."""
 
 __version__ = "1.0.0"
 __author__ = "Emir Perla"

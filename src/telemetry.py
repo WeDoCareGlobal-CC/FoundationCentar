@@ -1,4 +1,4 @@
-"""AtlanTida OS - Telemetry API (FastAPI)."""
+"""FoundationCentar - Telemetry API (FastAPI)."""
 
 from datetime import datetime, timezone
 from typing import Any
@@ -14,7 +14,7 @@ SKILL_EXECUTIONS = Counter("skill_executions_total", "Total skill executions", [
 SKILL_DURATION = Histogram("skill_execution_duration_seconds", "Skill execution duration", ["skill"])
 
 app = FastAPI(
-    title="AtlanTida OS Telemetry",
+    title="FoundationCentar Telemetry",
     description="Real-time agent health monitoring and skill execution tracking",
     version="1.0.0",
 )
@@ -53,7 +53,7 @@ async def metrics():
 
 @app.get("/")
 async def root():
-    return {"message": "AtlanTida OS API is running"}
+    return {"message": "FoundationCentar API is running"}
 
 
 @app.get("/health")
