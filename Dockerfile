@@ -42,7 +42,7 @@ COPY backend/ ./
 # =============================================================================
 # Stage 3: Python Runtime (FastAPI + Orchestrator + Telemetry)
 # =============================================================================
-FROM python:3.11-slim@sha256:a8c5e5b8c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5 AS python-runtime
+FROM python:3.11-slim@sha256:cce12316475d7d56d605f76e1d811d0dc4e7227f2d4afd29951521264f504ff8 AS python-runtime
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -75,7 +75,7 @@ USER appuser
 # =============================================================================
 # Stage 4: Final Production Image
 # =============================================================================
-FROM python:3.11-slim@sha256:a8c5e5b8c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5 AS production
+FROM python:3.11-slim@sha256:cce12316475d7d56d605f76e1d811d0dc4e7227f2d4afd29951521264f504ff8 AS production
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
